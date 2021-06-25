@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useCallback } from "react"
 import "./App.css"
 
 import Router from './router'
@@ -8,7 +8,6 @@ import { Home } from "./pages/home/index"
 import { CreateAppointment } from "./pages/createAppointment/index"
 
 function App() {
-
   const paths = {
     home: '/',
     allAppointments: '/allAppointments',
@@ -22,7 +21,6 @@ function App() {
   ];
 
   return (
-    
     <Router routes={routes} />
   )
 }

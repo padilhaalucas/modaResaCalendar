@@ -5,9 +5,9 @@
   margin: 0 auto;
 }
 #monthName {
-  font-size: 52px;
+  font-size: 38px;
   margin-right: 1em;
-  background-color: #474747;
+  background-color: #000000;
   color: white;
   padding: 0px 20px 3px 20px;
   box-shadow: 3px 3px 7px rgba(150, 150, 150, 0.9);
@@ -17,12 +17,14 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  overflow: hidden;
 }
 .titleContainer {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  height: 13vh;
   width: 100%;
   font-family: 'Source Code Pro', monospace;
   border-bottom: 2px solid black;
@@ -75,5 +77,4 @@
     font-family: 'Source Code Pro', monospace !important;
     border-bottom: 2px solid black !important;
   }
-  
 }

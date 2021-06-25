@@ -1,36 +1,27 @@
-import React, { useEffect, useReducer, useState } from 'react'
+import React, {
+  useCallback,
+  useEffect,
+  useState,
+  useMemo
+} from 'react'
 import { useHistory } from 'react-router-dom'
 
-import { useStaffMembersActions, useStaffMembers } from 'hooks/staff'
-import { useAppointmentActions, useAppointment } from '../../hooks/appointment'
-import { useClientActions, useClient } from '../../hooks/client'
-import { useRefresh } from '../../hooks/window'
+import { useStaffMembersActions } from 'hooks/staff'
+import { useAppointmentActions } from '../../hooks/appointment'
+import { useClientActions } from '../../hooks/client'
 
 import './styles.css'
 
 export const Home = () => {
   const history = useHistory()
   
-    const { getAllStaffMembers } = useStaffMembersActions()
-    const { allStaffMembers } = useStaffMembers()
-
+  const { getAllStaffMembers } = useStaffMembersActions()
   const { getAllAppointments } = useAppointmentActions()
-  const { allAppointments } = useAppointment()
-
   const { getAllClients } = useClientActions()
-  const { allClients } = useClient()
-
-  const { wasRefreshed } = useRefresh()
 
   const [shouldFetchData, setShouldFetchData] = useState(true)
 
-
-
-  console.log(allAppointments, 'ALL APPOINTMENTS')
-  console.log(allClients, 'ALL CLIENTS')
-  console.log(allStaffMembers, 'ALL STAFF MEMBERS')
-
-  const getDataFirstRender = () => {
+  const getDataFirstRender = useCallback(() => {
     const appointmentQuery = "{\n  allAppointments {\n    id: id\n    startAt: startAt\n    endAt: endAt\n    clientId: clientId\n    staffMemberId: staffMemberId\n  }\n}\n"
 
     const clientQuery = "{\n  allClients {\n    id: id\n    brandName: brandName\n  }\n}\n"
@@ -54,85 +45,44 @@ export const Home = () => {
       "variables":{},
       "query": clientQuery
     })
-  }
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const initialState = {
-    allStaffMembers,
-    allAppointments,
-    allClients
-  }
+  }, [shouldFetchData])
 
   useEffect(() => {
-    if(!wasRefreshed) {
-      if(shouldFetchData) {
-        getDataFirstRender()
-        localStorage.setItem(
-          'appointmentsScreenState',
-          JSON.stringify(initialState)
-        )
-        setShouldFetchData(false)
+    if(shouldFetchData) {
+      getDataFirstRender()
+      setShouldFetchData(false)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shouldFetchData])
+
+  const handleAllAppointments = () => {
+    
+    history.push({
+      pathname: '/allAppointments',
+      state: {
+        fromHome: true
       }
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  const reducer = (firstState: any, action: string) => {
-    let reducerState: any = {}
-
-    let auxStateOnRAM = localStorage.getItem('appointmentsScreenState')
-    const stateOnRAM = JSON.parse(`${auxStateOnRAM}`)
-
-    switch (action) {
-      case 'MAINTAIN_SCREEN_STATE':
-        reducerState = stateOnRAM
-    }
-
-    localStorage.removeItem('appointmentsScreenState')
-    localStorage.setItem('appointmentsScreenState', JSON.stringify(reducerState))
-
-    return reducerState
+    })
   }
-
-  const [state, dispatch] = useReducer(reducer, initialState)
-
-  useEffect((): any => {
-    if (wasRefreshed) {
-      return dispatch('MAINTAIN_SCREEN_STATE')
-    } else {
-      return state
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [wasRefreshed])
-
-  console.log(state?.allAppointments, 'ESTADO')
-  console.log(localStorage, 'local storage')
 
   return (
     <div className={"homeMainContainer"}>
-      <h1 className={"title"}>your <br/>agenda</h1>
+      <h1 className={"title"}>my <br/>agenda</h1>
+      <h1 className={'byLucas'}>by <span>lucas padilha</span></h1>
       <div>
-        {/* <button
+        <button
           className={"button"}
           onClick={() => history.push('/createAppointment')}
-        >
-            Do an appointment
-        </button> */}
+          >
+            Make an appointment
+        </button>
 
         <button
           className={"button"}
-          onClick={() => history.push({
-            pathname: '/allAppointments',
-            state: {
-              fromHome: true,
-              allStaffMembers: state?.allStaffMembers,
-              allAppointments: state?.allAppointments,
-              allClients: state?.allClients
-            }
-          })}
+          onClick={() => handleAllAppointments()}
           //onClick={() => handleTest()}
-        >
-            Check All Appointments
+          >
+            All Appointments
         </button>
       </div>
     </div>

@@ -1,7 +1,17 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useReducer } from 'react'
 import Paper from '@material-ui/core/Paper'
 import { ViewState, EditingState } from '@devexpress/dx-react-scheduler'
-import { Appointments, MonthView, Scheduler } from '@devexpress/dx-react-scheduler-material-ui'
+import {
+  AppointmentTooltip,
+  DateNavigator,
+  Appointments,
+  TodayButton,
+  MonthView,
+  Scheduler,
+  Toolbar,
+} from '@devexpress/dx-react-scheduler-material-ui'
+
+import { useRefresh } from 'hooks/window'
 
 import './styles.css'
 
@@ -9,29 +19,56 @@ const dragDisableIds = new Set([3, 8, 10, 12])
 
 const allowDrag = ({ id }: any) => !dragDisableIds.has(id)
 const appointmentComponent = (props: any) => {
+  const appointmentStyle = {
+    backgroundColor: 'black',
+    fontSize: '14px',
+    textAlign: 'center',
+    paddingTop: '4px'
+  }
   if (allowDrag(props)) {
-    return <Appointments.Appointment {...props} />
-  } return <Appointments.Appointment {...props} style={{ ...props.style, cursor: 'not-allowed' }} />;
+    return <Appointments.Appointment {...props} style={appointmentStyle} />
+  } return <Appointments.Appointment {...props} style={{ ...props.style, cursor: 'not-allowed', backgroundColor: 'black' }} />;
 }
 
-type CalendarProps = {
-  allStaffMembers: any,
-  appointments: any,
-  clients: any
-}
+const CalendarComponent = (): any => {
 
-const CalendarComponent = ({allStaffMembers, appointments, clients}: CalendarProps): any => {
+  const { wasRefreshed } = useRefresh()
 
-  const test = document.createElement('div')
-  test.appendChild(document.createTextNode('TESTEZAAAAAO'))
+  const reducer = (firstState: any, action: string) => {
+    let reducerState: any = {}
 
-  console.log(allStaffMembers, 'TESTE')
+    let auxStateOnRAM = localStorage.getItem('appointmentsScreenState')
+    const stateOnRAM = JSON.parse(`${auxStateOnRAM}`)
+
+    switch (action) {
+      case 'MAINTAIN_SCREEN_STATE':
+        reducerState = stateOnRAM
+    }
+
+    localStorage.removeItem('appointmentsScreenState')
+    localStorage.setItem('appointmentsScreenState', JSON.stringify(reducerState))
+
+    return reducerState
+  }
+
+  const [state, dispatch] = useReducer(reducer, JSON.parse(`${localStorage.getItem('appointmentsScreenState')}`))
+
+  useEffect((): any => {
+    if (wasRefreshed) {
+      return dispatch('MAINTAIN_SCREEN_STATE')
+    } else {
+      return state
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [wasRefreshed])
+
+  console.log(state, 'ESTADO')
 
   const appointmentsArray = () => {
     let auxArr: any = []
-    appointments?.forEach((appointment: any) => (
-      clients?.forEach((client: any): any => {
-        allStaffMembers?.forEach((member: any) => {
+    state?.allAppointments?.forEach((appointment: any) => (
+      state?.allClients?.forEach((client: any): any => {
+        state?.allStaffMembers?.forEach((member: any) => {
           if (client?.id === appointment?.clientId && member?.id === appointment?.staffMemberId) {
             auxArr = [...auxArr, {
               title: `
@@ -51,8 +88,6 @@ const CalendarComponent = ({allStaffMembers, appointments, clients}: CalendarPro
   }
     
   const appointmentsToRender = appointmentsArray()
-  
-  console.log(appointmentsToRender, 'TESTINHO')
     
   const initialState = {
     data: appointmentsToRender,
@@ -110,9 +145,6 @@ const CalendarComponent = ({allStaffMembers, appointments, clients}: CalendarPro
 
   const { data, currentDate } = calendarState
 
-  console.log(monthNames[currentDate.getMonth()], 'DTA')
-
-
   return (
     <div className={'mainContainer'}>
       <div className={'titleContainer'}>
@@ -123,7 +155,7 @@ const CalendarComponent = ({allStaffMembers, appointments, clients}: CalendarPro
       <Paper>
         <Scheduler
           data={data}
-          height={660}
+          height={680}
         >
           <ViewState
             defaultCurrentDate={currentDate}
@@ -137,6 +169,10 @@ const CalendarComponent = ({allStaffMembers, appointments, clients}: CalendarPro
           {/* <DragDropProvider
             allowDrag={allowDrag}
           /> */}
+          <Toolbar />
+          <DateNavigator />
+          <TodayButton />
+          <AppointmentTooltip />
         </Scheduler>
       </Paper>
 

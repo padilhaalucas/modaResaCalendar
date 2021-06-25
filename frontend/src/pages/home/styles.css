@@ -8,14 +8,16 @@
   align-items: flex-start;
   width: 100vw;
   height: 100vh;
+  animation: appear 1.5s ease-in;
 }
+
 
 .title {
   font-family: 'Source Code Pro', monospace;
   font-size: 72px;
   letter-spacing: 3px;
   margin-left: .25vw;
-  margin-bottom: 10px;
+  line-height: 70px;
 }
 
 .button {
@@ -29,64 +31,55 @@
   font-family: 'Source Code Pro', monospace;
 }
 
-.button:hover {
-  padding: 20px
+.byLucas {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 16px;
+  letter-spacing: 7.25px;
+  margin-left: .75vw;
+  margin-bottom: 5em;
+  margin-top: -2em;
 }
-/* tabletLandscape: {
-  mainContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '100%',
-    marginLeft: '-1vw',
-    height: 'auto',
-    justifyContent: 'space-around',
-    maxWidth: '100%'
-  },
-  navbar: {
-    overflow: 'hidden',
-    margin:'2% 2% 0% 0%',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignContent: "center",
-    flexDirection: 'row'
+
+@keyframes appear {
+  0% {
+    margin-left: -50vw;
+    opacity: 0;
   }
-},
-tablet: {
-  mainContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '100%',
-    marginLeft: '-1vw',
-    height: 'auto',
-    justifyContent: 'space-around',
-  },
-  navbar: {
-    overflow: 'hidden',
-    margin:'2% 2% 0% 0%',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignContent: "center",
-    flexDirection: 'row'
+  100% {
+    margin-left: 0vw;
+    opacity: 1;
   }
-},
-mobile: {
-  mainContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '100%',
-    marginLeft: '-1vw',
-    height: '100vh',
-    maxHeight: '100vh',
-    justifyContent: 'space-around',
-    marginTop: '25vh',
-    overflowY: 'hidden'
-  },
-  navbar: {
-    overflow: 'hidden',
-    margin:'2% 2% 0% 0%',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignContent: "center",
-    flexDirection: 'row'
+}
+
+@-o-keyframes appear {
+  0% {
+    margin-left: -50vw;
+    opacity: 0;
   }
-}, */
+  100% {
+    margin-left: 0vw;
+    opacity: 1;
+  }
+}
+
+@-moz-keyframes appear {
+  0% {
+    margin-left: -50vw;
+    opacity: 0;
+  }
+  100% {
+    margin-left: 0vw;
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes appear {
+  0% {
+    margin-left: -50vw;
+    opacity: 0;
+  }
+  100% {
+    margin-left: 0vw;
+    opacity: 1;
+  }
+}
