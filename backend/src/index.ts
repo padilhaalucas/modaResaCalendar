@@ -1,29 +1,25 @@
-import { ApolloServer } from "apollo-server";
+import { ApolloServer } from 'apollo-server'
 
-import { resolvers } from "./resolvers";
-import { typeDefs } from "./typeDefs";
+import { schema } from './schema'
 
-import { PrismaClient } from "@prisma/client";
+import { prisma } from './context'
+import { context } from './context'
 
-const runServer = () => {
-  const prisma = new PrismaClient();
+const startServer = (): any => {
 
   const server = new ApolloServer({
-    resolvers,
-    typeDefs,
-    context: () => {
-      return {
-        prisma,
-      };
-    },
-  });
+    schema, context
+  })
 
-  const port = 4000;
+  const port = 4000
   server.listen(port, () => {
-    console.log(
-      `🚀 Server ready at http://localhost:${port}${server.graphqlPath}`
-    );
-  });
-};
+    console.log(`🚀 Server ready at http://localhost:${port}${server.graphqlPath}`)
+  })
+}
 
-runServer();
+startServer()?.catch((e) => {
+  throw e
+}).finally(async () => {
+  await prisma.$disconnect()
+})
+

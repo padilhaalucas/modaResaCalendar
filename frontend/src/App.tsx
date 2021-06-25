@@ -1,19 +1,30 @@
-import React from "react";
-import "./App.css";
+import React from "react"
+import "./App.css"
 
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { AllPosts } from "./pages/AllPosts";
-import { CreatePost } from "./pages/CreatePost";
+import Router from './router'
+
+import { AllAppointments } from "./pages/allAppointments/index"
+import { Home } from "./pages/home/index"
+import { CreateAppointment } from "./pages/createAppointment/index"
 
 function App() {
+
+  const paths = {
+    home: '/',
+    allAppointments: '/allAppointments',
+    createAppointment: '/createAppointment',
+  };
+
+  const routes = [
+    { path: paths.home, component: Home },
+    { path: paths.allAppointments, component: AllAppointments },
+    { path: paths.createAppointment, component: CreateAppointment },
+  ];
+
   return (
-    <Router>
-      <Switch>
-        <Route component={CreatePost} path="/add-post" />
-        <Route component={AllPosts} path="/" />
-      </Switch>
-    </Router>
-  );
+    
+    <Router routes={routes} />
+  )
 }
 
-export default App;
+export default App
