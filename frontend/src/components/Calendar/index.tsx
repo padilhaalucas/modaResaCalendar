@@ -1,76 +1,11 @@
 import React, { useState } from 'react'
 import Paper from '@material-ui/core/Paper'
 import { ViewState, EditingState } from '@devexpress/dx-react-scheduler'
-import {
-  Scheduler,
-  WeekView,
-  Appointments,
-  DragDropProvider,
-  EditRecurrenceMenu,
-  AllDayPanel,
-} from '@devexpress/dx-react-scheduler-material-ui'
+import { Appointments, MonthView, Scheduler } from '@devexpress/dx-react-scheduler-material-ui'
 
-const recurrenceAppointments = [{
-  title: 'Website Re-Design Plan',
-  startDate: new Date(2018, 5, 25, 9, 15),
-  endDate: new Date(2018, 5, 25, 11, 30),
-  id: 100,
-  rRule: 'FREQ=DAILY;COUNT=3',
-  exDate: '20180628T063500Z,20180626T061500Z',
-}, {
-  title: 'Book Flights to San Fran for Sales Trip',
-  startDate: new Date(2018, 5, 25, 12, 11),
-  endDate: new Date(2018, 5, 25, 13, 0),
-  id: 101,
-  rRule: 'FREQ=DAILY;COUNT=4',
-  exDate: '20180627T091100Z',
-  allDay: true,
-}, {
-  title: 'Install New Router in Dev Room',
-  startDate: new Date(2018, 5, 25, 13, 30),
-  endDate: new Date(2018, 5, 25, 14, 35),
-  id: 102,
-  rRule: 'FREQ=DAILY;COUNT=5',
-}, {
-  title: 'Approve Personal Computer Upgrade Plan',
-  startDate: new Date(2018, 5, 26, 10, 0),
-  endDate: new Date(2018, 5, 26, 11, 0),
-  id: 3,
-  location: 'Room 2',
-}, {
-  title: 'Final Budget Review',
-  startDate: new Date(2018, 5, 27, 11, 45),
-  endDate: new Date(2018, 5, 27, 13, 20),
-  id: 4,
-  location: 'Room 2',
-}, {
-  title: 'New Brochures',
-  startDate: new Date(2018, 5, 26, 14, 40),
-  endDate: new Date(2018, 5, 26, 15, 45),
-  id: 5,
-  location: 'Room 2',
-}, {
-  title: 'Install New Database',
-  startDate: new Date(2018, 5, 28, 9, 45),
-  endDate: new Date(2018, 5, 28, 11, 15),
-  id: 6,
-  location: 'Room 1',
-}, {
-  title: 'Approve New Online Marketing Strategy',
-  startDate: new Date(2018, 5, 29, 11, 45),
-  endDate: new Date(2018, 5, 29, 13, 5),
-  id: 7,
-  location: 'Room 3',
-}, {
-  title: 'Create Icons for Website',
-  startDate: new Date(2018, 5, 29, 10, 0),
-  endDate: new Date(2018, 5, 29, 11, 30),
-  id: 12,
-  location: 'Room 2',
-}]
+import './styles.css'
 
 const dragDisableIds = new Set([3, 8, 10, 12])
-
 
 const allowDrag = ({ id }: any) => !dragDisableIds.has(id)
 const appointmentComponent = (props: any) => {
@@ -79,10 +14,49 @@ const appointmentComponent = (props: any) => {
   } return <Appointments.Appointment {...props} style={{ ...props.style, cursor: 'not-allowed' }} />;
 }
 
-const CalendarComponent = (): any => {
+type CalendarProps = {
+  allStaffMembers: any,
+  appointments: any,
+  clients: any
+}
+
+const CalendarComponent = ({allStaffMembers, appointments, clients}: CalendarProps): any => {
+
+  const test = document.createElement('div')
+  test.appendChild(document.createTextNode('TESTEZAAAAAO'))
+
+  console.log(allStaffMembers, 'TESTE')
+
+  const appointmentsArray = () => {
+    let auxArr: any = []
+    appointments?.forEach((appointment: any) => (
+      clients?.forEach((client: any): any => {
+        allStaffMembers?.forEach((member: any) => {
+          if (client?.id === appointment?.clientId && member?.id === appointment?.staffMemberId) {
+            auxArr = [...auxArr, {
+              title: `
+                ${client?.brandName} - ${member?.firstName} ${member?.lastName}
+              `,
+              startDate: new Date(+appointment?.startAt),
+              endDate: new Date(+appointment?.endAt),
+              id: appointment?.id,
+              staffMemberId: appointment?.staffMemberId,
+            }]
+          }
+        })
+      })
+      ))
+    
+    return auxArr
+  }
+    
+  const appointmentsToRender = appointmentsArray()
+  
+  console.log(appointmentsToRender, 'TESTINHO')
+    
   const initialState = {
-    data: recurrenceAppointments,
-    currentDate: new Date('2018-06-27')
+    data: appointmentsToRender,
+    currentDate: new Date('2021-06-07')
   }
 
   const [calendarState, setCalendarState] = useState(initialState)
@@ -95,44 +69,78 @@ const CalendarComponent = (): any => {
         data = [...data, { id: startingAddedId, ...added}]
       }
       if (changed) {
-        data = data.map(appointment => (
+        data = data.map((appointment: any): any => (
           changed[appointment?.id] ? { ...appointment, ...changed[appointment?.id]} : appointment
         ))
       }
       if (deleted !== undefined) {
-        data = data.filter(appointment => appointment?.id !== deleted)
+        data = data.filter((appointment: any): any => appointment?.id !== deleted)
       }
 
       return { data }
     })
   }
 
+  const Cell = React.useCallback(
+    ({ onDoubleClick, startDate, ...restProps }) => {
+
+      return (
+        <MonthView.TimeTableCell
+          {...restProps}
+          startDate={startDate}
+        />
+      );
+    },
+  [])
+
+  const monthNames = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November', 
+    'December'
+  ]
+
   const { data, currentDate } = calendarState
 
+  console.log(monthNames[currentDate.getMonth()], 'DTA')
+
+
   return (
-    <Paper>
-      <Scheduler
-        data={data}
-        height={660}
-      >
-        <ViewState
-          defaultCurrentDate={currentDate}
-        />
-        <EditingState
-          onCommitChanges={onCommitChanges}
-        />
-        <EditRecurrenceMenu />
-        <WeekView
-          startDayHour={9}
-          endDayHour={16}
-        />
-        <Appointments appointmentComponent={appointmentComponent} />
-        <AllDayPanel />
-        <DragDropProvider
-          allowDrag={allowDrag}
-        />
-      </Scheduler>
-    </Paper>
+    <div className={'mainContainer'}>
+      <div className={'titleContainer'}>
+        <h1 id={'title'}>Check your agenda</h1>
+        <h1 id={'monthName'}>{monthNames[currentDate.getMonth()]}</h1>
+        <h1 id={'scrollTip'}>scroll to see more →</h1>
+      </div>
+      <Paper>
+        <Scheduler
+          data={data}
+          height={660}
+        >
+          <ViewState
+            defaultCurrentDate={currentDate}
+          />
+          <MonthView timeTableCellComponent={Cell} />
+          <EditingState
+            onCommitChanges={onCommitChanges}
+          />
+
+          <Appointments appointmentComponent={appointmentComponent} />
+          {/* <DragDropProvider
+            allowDrag={allowDrag}
+          /> */}
+        </Scheduler>
+      </Paper>
+
+    </div>
   )
 }
 

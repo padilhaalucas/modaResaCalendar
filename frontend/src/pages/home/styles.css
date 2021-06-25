@@ -12,13 +12,16 @@
 
 .title {
   font-family: 'Source Code Pro', monospace;
-  font-size: 58px;
-  letter-spacing: 80px;
+  font-size: 72px;
+  letter-spacing: 3px;
   margin-left: .25vw;
+  margin-bottom: 10px;
 }
 
 .button {
-  padding: 15px;
+  padding: 15px 25px;
+  font-size: 20px;
+  margin-left: -1vw;
   color: #474747;
   background-color: white;
   box-shadow: 3px 3px 1px rgba(71, 71, 71, 0.9);

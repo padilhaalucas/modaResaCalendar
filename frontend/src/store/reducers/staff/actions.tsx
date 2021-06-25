@@ -1,11 +1,11 @@
 import axios from 'axios'
 import * as actionTypes from './actionTypes'
 
-const getAllAppointmentsRequest = (data: any) => {
+const getAllStaffMembersRequest = (data: any) => {
 
   return (dispatch: any) => {
     dispatch({
-      type: actionTypes.GET_ALL_APPOINTMENTS,
+      type: actionTypes.GET_ALL_STAFF_MEMBERS,
       payload: data
     })
 
@@ -13,7 +13,7 @@ const getAllAppointmentsRequest = (data: any) => {
       .then((res) => {
         if (res) {
           dispatch({
-            type: actionTypes.GET_ALL_APPOINTMENTS_SUCCESS,
+            type: actionTypes.GET_ALL_STAFF_MEMBERS_SUCCESS,
             res
           })
         }
@@ -21,7 +21,7 @@ const getAllAppointmentsRequest = (data: any) => {
       .catch((error) => {
         if (error) {
           dispatch({
-            type: actionTypes.GET_ALL_APPOINTMENTS_FAIL,
+            type: actionTypes.GET_ALL_STAFF_MEMBERS_FAIL,
             error
           })
         }
@@ -29,4 +29,4 @@ const getAllAppointmentsRequest = (data: any) => {
   }
 }
 
-export { getAllAppointmentsRequest }
+export { getAllStaffMembersRequest }

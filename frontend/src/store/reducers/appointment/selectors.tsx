@@ -19,7 +19,7 @@ export const getAllAppointmentsError = createSelector([
 )
 
 export const getAllAppointments = createSelector([
-  (state: any) => state?.getAllAppointmentsService?.getAllAppointments?.allClients
+  (state: any) => state?.getAllAppointmentsService?.getAllAppointments?.allAppointments
 ], 
   (appointments) => appointments
 )

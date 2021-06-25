@@ -1,7 +1,9 @@
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux'
 import thunk from 'redux-thunk'
 
+import getAllStaffMembersReducer from './reducers/staff/staffReducers/getAll'
 import getAllAppointmentsReducer from './reducers/appointment/appointmentReducers/getAll'
+import getAllClientsReducer from './reducers/client/clientReducers/getAll'
 
 declare global {
   interface Window {
@@ -12,7 +14,9 @@ declare global {
 export const configureStore = () => {
 
   const reducers = combineReducers({
-    getAllAppointmentsService: getAllAppointmentsReducer
+    getAllStaffMembersService: getAllStaffMembersReducer,
+    getAllAppointmentsService: getAllAppointmentsReducer,
+    getAllClientsService: getAllClientsReducer
   })
 
   const middleware = [thunk]
