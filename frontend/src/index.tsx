@@ -11,7 +11,7 @@ import { InMemoryCache, ApolloClient, ApolloProvider } from "@apollo/client"
 const cache = new InMemoryCache()
 
 const client = new ApolloClient({
-  uri: "http://localhost:3000",
+  uri: "https://6d1b5d43fe9e.ngrok.io/#/",
   cache,
 })
 
