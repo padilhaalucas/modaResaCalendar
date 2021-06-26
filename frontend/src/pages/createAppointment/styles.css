@@ -1,8 +1,8 @@
 .createAppointmentContainer {
   max-width: 100%;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: row !important;
+  justify-content: space-around;
   align-items: center;
   width: 100vw;
   height: 100vh;
@@ -10,7 +10,7 @@
 
 .createAppointmentCalendar {
   width: 40vw !important;
-  height: 100vh !important;
+  height: 60vh !important;
 }
 
 .createAppointmentCalendar > .Calendar__sectionWrapper > .Calendar__section > .Calendar__weekRow {
@@ -49,9 +49,110 @@
   margin-bottom: 2em;
 }
 
-.createAppointmentContent {
+.selectAppointment {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  width: 40vw;
+  width: 100%;
+}
+
+.createAppointmentContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 35%;
+  height: 40vh;
+}
+
+.button {
+  padding: 15px 25px;
+  font-size: 20px;
+  margin-left: -1vw;
+  color: #474747;
+  background-color: white;
+  box-shadow: 3px 3px 1px rgba(71, 71, 71, 0.9);
+  cursor: pointer;
+  font-family: 'Source Code Pro', monospace;
+}
+
+@media only screen and (max-width: 475px) {
+  .createAppointmentContainer {
+    max-width: 100%;
+    display: flex;
+    flex-direction: column !important;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 1vh;
+    width: 100vw;
+    height: 100vh;
+  }
+  
+  .createAppointmentCalendar {
+    width: 100vw !important;
+    height: 60vh !important;
+  }
+  
+  .createAppointmentCalendar > .Calendar__sectionWrapper > .Calendar__section > .Calendar__weekRow {
+    height: 10vh !important;
+  }
+  
+  .createAppointmentCalendar > .Calendar__sectionWrapper > .Calendar__section > .Calendar__weekRow > .Calendar__day {
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 0%;
+  }
+  
+  .createAppointmentCalendar > .Calendar__sectionWrapper > .Calendar__section > .Calendar__weekRow > .-selected {
+    background: black !important;
+  }
+  
+  .createAppointmentCalendar > .Calendar__sectionWrapper {
+    min-height: 40em !important;
+  }
+  
+  .formControl {
+    min-width: 12.5vw;
+    width: 12.5vw;
+  }
+  
+  .buttonMaterialUI {
+    display: block;
+    margin-top: 16px;
+    width: 10em !important;
+  }
+  
+  .selectContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2em;
+  }
+  
+  .selectAppointment {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+  }
+  
+  .createAppointmentContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 90%;
+    height: 40vh;
+  }
+  
+  .button {
+    padding: 15px 25px;
+    font-size: 20px !important;
+    color: #474747;
+    background-color: white;
+    box-shadow: 3px 3px 1px rgba(71, 71, 71, 0.9);
+    cursor: pointer;
+    font-family: 'Source Code Pro', monospace;
+  }  
 }

@@ -62,8 +62,6 @@ const CalendarComponent = (): any => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wasRefreshed])
 
-  console.log(state, 'ESTADO')
-
   const appointmentsArray = () => {
     let auxArr: any = []
     state?.allAppointments?.forEach((appointment: any) => (

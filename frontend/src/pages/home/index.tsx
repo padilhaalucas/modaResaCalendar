@@ -1,8 +1,7 @@
 import React, {
   useCallback,
   useEffect,
-  useState,
-  useMemo
+  useState
 } from 'react'
 import { useHistory } from 'react-router-dom'
 
@@ -80,7 +79,6 @@ export const Home = () => {
         <button
           className={"button"}
           onClick={() => handleAllAppointments()}
-          //onClick={() => handleTest()}
           >
             All Appointments
         </button>
